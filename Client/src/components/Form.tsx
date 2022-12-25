@@ -1,47 +1,17 @@
-import {
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  FormHelperText,
-  Container,
-  Box,
-  NativeSelect,
-  Stack,
-  Button,
-  Typography,
-} from "@mui/material";
-import { SelectChangeEvent } from "@mui/material/Select";
-import { useState } from "react";
-import ReactCountryFlag from "react-country-flag";
-import CountryDialog from "./CountryDialog";
+import { Box, Button } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import { BaseComponentProps } from "../models/BaseComponentProps";
+import FormInput from "./FormInput";
 
-function Form() {
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
+export interface FormProps extends BaseComponentProps {}
 
+function Form({ validationService }: FormProps) {
   return (
     <section className="bg-[#F0F3F4] py-7 text-gray-600 h-72 px-4">
       <Stack spacing={5} className="max-w-3xl m-auto">
         <Box className="h-2"></Box>
 
-        <Stack direction="row" spacing={1}>
-          <Button size="large" onClick={() => setIsDialogOpen(true)}>
-            <ReactCountryFlag
-              style={{
-                fontSize: "1.5em",
-              }}
-              countryCode="AU"
-            />
-            Australia
-          </Button>
-
-          <FormControl fullWidth>
-            <InputLabel>Phone Number</InputLabel>
-            <OutlinedInput
-              placeholder="e.g. 0411 000 000"
-              label="Phone Number"
-            />
-          </FormControl>
-        </Stack>
+        <FormInput validationService={validationService} />
 
         <Box>
           <Button variant="contained" fullWidth>
@@ -49,14 +19,6 @@ function Form() {
           </Button>
         </Box>
       </Stack>
-
-      <CountryDialog
-        onClose={() => {
-          setIsDialogOpen(false);
-        }}
-        open={isDialogOpen}
-        selectedValue=""
-      />
     </section>
   );
 }

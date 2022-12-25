@@ -22,9 +22,9 @@ public class PhoneNumberController : ControllerBase
 
     [HttpGet(Name = "GetSupportedCountries")]
     [Route("get-supported-countries")]
-    public ActionResult<IList<SupportedCountries>> GetSupportedCountries()
+    public ActionResult<IEnumerable<SupportedCountries>> GetSupportedCountries()
     {
-        List<SupportedCountries> supportedCountries = _phoneService.GetSupportedCountries();
+        IEnumerable<SupportedCountries> supportedCountries = _phoneService.GetSupportedCountries();
 
         return Ok(supportedCountries);
     }

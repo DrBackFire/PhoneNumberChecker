@@ -18,7 +18,7 @@ namespace PhoneNumberChecker.Services
 
         private int FindCountryCode(string countryShortCode)
         {
-            return phoneUtil.GetCountryCodeForRegion(countryShortCode.ToUpper());
+            return phoneUtil.GetCountryCodeForRegion(countryShortCode);
         }
 
         private string GetExampleNumberByRegion(string regionCode)
@@ -29,20 +29,10 @@ namespace PhoneNumberChecker.Services
                     .ToString();
         }
 
-        private PhoneNumberType GetNumberType(PhoneNumber phoneNumber)
-        {
-            return phoneUtil.GetNumberType(phoneNumber);
-        }
-
 
         private string FindRegionByCountryCode(int countryCode)
         {
             return phoneUtil.GetRegionCodeForCountryCode(countryCode);
-        }
-
-        private bool IsNumberPossible(PhoneNumber phoneNumber)
-        {
-            return phoneUtil.IsPossibleNumber(phoneNumber);
         }
 
         private string GetCountryPlaceHolder(string regionCode)
@@ -93,14 +83,14 @@ namespace PhoneNumberChecker.Services
         }
 
 
-        public List<SupportedCountries> GetSupportedCountries()
+        public IEnumerable<SupportedCountries> GetSupportedCountries()
         {
             if (supportedCountries.Count == 0)
             {
                 BuildSupportedCountriesList();
             }
 
-            return supportedCountries.OrderBy(x => x.CountryName).ToList();
+            return supportedCountries.OrderBy(x => x.CountryName);
         }
 
         public NumberValidationDTO IsNumberValid(string number, int countryCode)
@@ -112,8 +102,8 @@ namespace PhoneNumberChecker.Services
             NumberValidationDTO dto = new NumberValidationDTO()
             {
                 IsValid = phoneUtil.IsValidNumber(phoneNumber),
-                IsPossible = IsNumberPossible(phoneNumber),
-                NumberType = GetNumberType(phoneNumber),
+                IsPossible = phoneUtil.IsPossibleNumber(phoneNumber),
+                NumberType = phoneUtil.GetNumberType(phoneNumber),
                 PhoneNumber = phoneNumber.NationalNumber,
                 IntlFormat = phoneUtil.Format(phoneNumber, PhoneNumberFormat.INTERNATIONAL),
                 Region = phoneUtil.GetRegionCodeForNumber(phoneNumber)

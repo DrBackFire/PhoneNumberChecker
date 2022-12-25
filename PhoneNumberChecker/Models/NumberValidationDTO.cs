@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using PhoneNumbers;
 
 namespace PhoneNumberChecker.Models
@@ -11,7 +12,6 @@ namespace PhoneNumberChecker.Models
         public bool IsPossible { get; set; }
         public PhoneNumberType NumberType { get; set; }
         public string? Region { get; set; }
-
 
         // Format text based on run environment
         public string FormattedNumberType => Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(

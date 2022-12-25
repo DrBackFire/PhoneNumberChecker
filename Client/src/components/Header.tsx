@@ -15,7 +15,7 @@ function Header() {
         <Toolbar>
           <Typography color="primary" variant="h6" noWrap>
             <SecurityIcon fontSize="large" />
-            Number Checker
+            Number Validator
           </Typography>
 
           <Box style={{ flexGrow: 1 }}></Box>

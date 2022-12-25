@@ -1,6 +1,7 @@
 export interface SupportedCountries {
   countryCode: number;
-  countryName: string | null;
-  numberPlaceHolder: string | null;
-  region: string | null;
+  countryName: string;
+  numberPlaceHolder: string;
+  region: string;
+  isDefault: boolean;
 }
