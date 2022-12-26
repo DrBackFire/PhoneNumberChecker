@@ -101,6 +101,7 @@ namespace PhoneNumberChecker.Services
 
             NumberValidationDTO dto = new NumberValidationDTO()
             {
+                Id = Guid.NewGuid(),
                 IsValid = phoneUtil.IsValidNumber(phoneNumber),
                 IsPossible = phoneUtil.IsPossibleNumber(phoneNumber),
                 NumberType = phoneUtil.GetNumberType(phoneNumber),

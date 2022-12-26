@@ -12,18 +12,18 @@ function FormInput({ validationService }: FormInputProps) {
     setCountryValue(newValue);
     setCountryInfo(info);
 
-    if (validationService) {
-      validationService.numberToValidate = {
-        countryCode: +(info.countryCallingCode ?? "0"),
-        phoneNumber: +(info.nationalNumber ?? "0"),
-      };
-    }
+    validationService?.SetNumberToValidate({
+      countryCode: +(info.countryCallingCode ?? "0"),
+      phoneNumber: +(info.nationalNumber ?? "0"),
+    });
   };
 
   return (
     <MuiTelInput
+      autoFocus
       onlyCountries={validationService?.countryCodes}
-      defaultCountry={validationService?.defaultCountry}
+      defaultCountry={validationService?.defaultCountry ?? "AU"}
+      forceCallingCode
       variant="outlined"
       value={countryValue}
       onChange={handleChange}

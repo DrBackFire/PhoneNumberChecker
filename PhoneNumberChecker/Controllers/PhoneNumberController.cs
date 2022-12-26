@@ -33,6 +33,11 @@ public class PhoneNumberController : ControllerBase
     [Route("is-number-valid")]
     public ActionResult<NumberValidationDTO> IsNumberValid([FromBody] NumberValidationPayload payload)
     {
+        if (payload.countryCode == 0 || payload.phoneNumber == 0)
+        {
+            return BadRequest("0 is not a valid number");
+        }
+
         NumberValidationDTO dto = _phoneService.IsNumberValid(payload.formattedNbr, payload.countryCode);
 
         return Ok(dto);

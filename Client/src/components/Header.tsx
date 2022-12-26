@@ -1,17 +1,23 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Tooltip from "@mui/material/Tooltip";
+import {
+  Tooltip,
+  Typography,
+  IconButton,
+  Toolbar,
+  Box,
+  AppBar,
+} from "@mui/material";
+
 import InfoIcon from "@mui/icons-material/Info";
 import SecurityIcon from "@mui/icons-material/Security";
+import Form from "./Form";
+import { BaseComponentProps } from "../models/BaseComponentProps";
 
-function Header() {
+export interface HeaderInputProps extends BaseComponentProps {}
+
+function Header(props: HeaderInputProps) {
   return (
-    <AppBar color="transparent" position="sticky" className="py-2 z-50">
-      <Container maxWidth="xl">
+    <div className="bg-white sticky top-0">
+      <AppBar color="transparent" position="sticky" className="py-2 z-50">
         <Toolbar>
           <Typography color="primary" variant="h6" noWrap>
             <SecurityIcon fontSize="large" />
@@ -28,8 +34,9 @@ function Header() {
             </Tooltip>
           </Box>
         </Toolbar>
-      </Container>
-    </AppBar>
+      </AppBar>
+      <Form {...props} />
+    </div>
   );
 }
 export default Header;

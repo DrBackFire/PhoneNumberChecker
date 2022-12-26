@@ -5,7 +5,7 @@ import { ValidationPayload } from "../models/ValidationPayload";
 export class ValidationService {
   private _default: SupportedCountries | undefined;
 
-  private _numberToValidate: ValidationPayload = {
+  private numberToValidate: ValidationPayload = {
     countryCode: 0,
     phoneNumber: 0,
   };
@@ -16,12 +16,12 @@ export class ValidationService {
     }
   }
 
-  get numberToValidate() {
-    return this._numberToValidate;
+  SetNumberToValidate(value: ValidationPayload) {
+    this.numberToValidate = value;
   }
 
-  set numberToValidate(value) {
-    this._numberToValidate = value;
+  GetNumberToValidate() {
+    return this.numberToValidate;
   }
 
   get countryCodes(): MuiTelInputCountry[] {
