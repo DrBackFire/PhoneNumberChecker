@@ -1,3 +1,5 @@
+import { NumberType } from "libphonenumber-js";
+
 export enum PhoneNumberType {
   FIXED_LINE = 0,
   MOBILE = 1,
@@ -13,14 +15,16 @@ export enum PhoneNumberType {
   UNKNOWN = 11,
 }
 
-export interface NumberValidationDTO {
-  id: string;
-  phoneNumber: number;
-  intlFormat: string | null;
-  isValid: boolean;
-  isPossible: boolean;
-  numberType: PhoneNumberType;
-  region: string | null;
-  formattedNumberType: string;
-  isSelected: boolean;
+export class NumberValidationDTO {
+  id: string = "";
+  phoneNumber: number = 0;
+  intlFormat: string | null = null;
+  isValid: boolean = false;
+  isPossible: boolean = false;
+  numberType: PhoneNumberType | NumberType = PhoneNumberType.UNKNOWN ?? "UAN";
+  region: string | null = null;
+  formattedNumberType: string = "";
+  isSelected: boolean = false;
+
+  constructor() {}
 }

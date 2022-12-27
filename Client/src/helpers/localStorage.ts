@@ -1,5 +1,11 @@
 import { StorageKeys } from "../models/StorageKeys";
 
+/**
+ * Get value from local storage
+ * @param  {StorageKeys} key
+ * @param  {object} initialValue - To be returned if no value found
+ * @return {T} Value
+ */
 const getFromStorage = <T>(key: StorageKeys, initialValue: T) => {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
@@ -19,6 +25,11 @@ const getFromStorage = <T>(key: StorageKeys, initialValue: T) => {
   }
 };
 
+/**
+ * Get value from local storage
+ * @param  {StorageKeys} key
+ * @param  {object} valueToStore Value to store
+ */
 const setStorage = <T>(key: StorageKeys, valueToStore: T) => {
   try {
     // Save to local storage

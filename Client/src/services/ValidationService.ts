@@ -1,13 +1,21 @@
-import { MuiTelInputCountry } from "mui-tel-input";
+import { MuiTelInputCountry, MuiTelInputInfo } from "mui-tel-input";
+import {
+  NumberValidationDTO,
+  PhoneNumberType,
+} from "../models/NumberValidationDTO";
 import { SupportedCountries } from "../models/SupportedCountries";
 import { ValidationPayload } from "../models/ValidationPayload";
+import parsePhoneNumber from "libphonenumber-js";
+import { v4 as uuidv4 } from "uuid";
 
 export class ValidationService {
   private _default: SupportedCountries | undefined;
 
-  private numberToValidate: ValidationPayload = {
-    countryCode: 0,
-    phoneNumber: 0,
+  private _numberToValidate: ValidationPayload = {
+    payload: {
+      countryCode: 0,
+      phoneNumber: 0,
+    },
   };
 
   constructor(private supportedCountries: SupportedCountries[]) {
@@ -16,12 +24,14 @@ export class ValidationService {
     }
   }
 
-  SetNumberToValidate(value: ValidationPayload) {
-    this.numberToValidate = value;
+  SetValidationPayload(value: ValidationPayload) {
+    this._numberToValidate = value;
   }
 
-  GetNumberToValidate() {
-    return this.numberToValidate;
+  get payload(): ValidationPayload {
+    // To ensure that on error call back does not lose class scope
+    this._numberToValidate.onErrorCallback = this.ValidateOffline.bind(this);
+    return this._numberToValidate;
   }
 
   get countryCodes(): MuiTelInputCountry[] {
@@ -36,6 +46,10 @@ export class ValidationService {
     return this._default?.countryCode?.toString();
   }
 
+  ValidateInput({ numberValue }: MuiTelInputInfo) {
+    return !!parsePhoneNumber(numberValue ?? "");
+  }
+
   GetHelperText(countryCallingCode: number): string {
     const ph =
       this.supportedCountries.find((x) => x.countryCode === countryCallingCode)
@@ -44,5 +58,25 @@ export class ValidationService {
       "";
 
     return `e.g. ${ph}`;
+  }
+
+  ValidateOffline(): NumberValidationDTO {
+    const { countryCode, phoneNumber: number } = this._numberToValidate.payload;
+
+    const phoneNumber = parsePhoneNumber(`+${countryCode}${number}`);
+
+    return {
+      formattedNumberType:
+        phoneNumber?.getType()?.toLocaleLowerCase()?.split("_")?.join(" ") ??
+        PhoneNumberType[11].toLowerCase(),
+      id: uuidv4(),
+      intlFormat: phoneNumber?.formatInternational() ?? "",
+      isPossible: phoneNumber?.isPossible() ?? false,
+      isSelected: false,
+      isValid: phoneNumber?.isValid() ?? false,
+      numberType: phoneNumber?.getType(),
+      phoneNumber: +(phoneNumber?.formatNational() ?? "0"),
+      region: phoneNumber?.country ?? "",
+    };
   }
 }

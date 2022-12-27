@@ -38,8 +38,15 @@ public class PhoneNumberController : ControllerBase
             return BadRequest("0 is not a valid number");
         }
 
-        NumberValidationDTO dto = _phoneService.IsNumberValid(payload.formattedNbr, payload.countryCode);
+        try
+        {
+            NumberValidationDTO dto = _phoneService.IsNumberValid(payload.formattedNbr, payload.countryCode);
+            return Ok(dto);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
 
-        return Ok(dto);
     }
 }

@@ -28,13 +28,13 @@ const setValidatedNumbers = (data: NumberValidationDTO, patch = false) => {
 };
 
 // Define the "validatePhoneNumber" mutation
-queryClient.setMutationDefaults("validatePhoneNumber", {
-  mutationFn: validatePhoneNumber,
-  onSuccess: (data) => {
-    setValidatedNumbers(data);
-  },
-  retry: 3,
-});
+// queryClient.setMutationDefaults("validatePhoneNumber", {
+//   mutationFn: validatePhoneNumber,
+//   onSuccess: (data) => {
+//     setValidatedNumbers(data);
+//   },
+//   retry: 0,
+// });
 
 queryClient.setMutationDefaults("updateValidatedNumbers", {
   mutationFn: async (data) => {

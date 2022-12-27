@@ -1,33 +1,35 @@
-import { MuiTelInputInfo, MuiTelInput } from "mui-tel-input";
-import { useState } from "react";
+import { MuiTelInputInfo, MuiTelInput, MuiTelInputProps } from "mui-tel-input";
 import { BaseComponentProps } from "../models/BaseComponentProps";
+export interface FormInputProps extends BaseComponentProps {
+  countryValue: string;
+  countryInfo: MuiTelInputInfo | undefined;
+  onChange: MuiTelInputProps["onChange"];
+  isError: boolean;
+}
 
-export interface FormInputProps extends BaseComponentProps {}
-
-function FormInput({ validationService }: FormInputProps) {
-  const [countryValue, setCountryValue] = useState("");
-  const [countryInfo, setCountryInfo] = useState<MuiTelInputInfo>();
-
-  const handleChange = (newValue: string, info: MuiTelInputInfo) => {
-    setCountryValue(newValue);
-    setCountryInfo(info);
-
-    validationService?.SetNumberToValidate({
-      countryCode: +(info.countryCallingCode ?? "0"),
-      phoneNumber: +(info.nationalNumber ?? "0"),
-    });
-  };
-
+function FormInput({
+  validationService,
+  countryValue,
+  countryInfo,
+  onChange,
+  isError,
+}: FormInputProps) {
   return (
     <MuiTelInput
-      autoFocus
-      onlyCountries={validationService?.countryCodes}
-      defaultCountry={validationService?.defaultCountry ?? "AU"}
-      forceCallingCode
+      autoFocus /** To allow users to start typing when page loads */
+      onlyCountries={
+        validationService?.countryCodes
+      } /** To only show supported countries provided by the api */
+      defaultCountry={
+        validationService?.defaultCountry ?? "AU"
+      } /** Default country to load */
+      forceCallingCode /** To prevent users from deleting calling country code */
       variant="outlined"
       value={countryValue}
-      onChange={handleChange}
-      disableDropdown={!!!validationService?.countryCodes}
+      onChange={onChange}
+      disableDropdown={
+        !!!validationService?.countryCodes
+      } /** Disable dropdown if api does not return supported countries */
       helperText={validationService?.GetHelperText(
         +(
           countryInfo?.countryCallingCode ??
@@ -35,7 +37,7 @@ function FormInput({ validationService }: FormInputProps) {
           "0"
         )
       )}
-      error={false}
+      error={isError}
     />
   );
 }

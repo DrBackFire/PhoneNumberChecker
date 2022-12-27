@@ -1,4 +1,9 @@
+import { NumberValidationDTO } from "./NumberValidationDTO";
+
 export interface ValidationPayload {
-  countryCode: number;
-  phoneNumber: number;
+  payload: {
+    countryCode: number;
+    phoneNumber: number;
+  };
+  onErrorCallback?: () => NumberValidationDTO;
 }
