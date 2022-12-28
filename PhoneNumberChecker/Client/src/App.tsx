@@ -14,7 +14,7 @@ function App() {
     "supportedCountries",
     fetchCountries,
     {
-      select: (data) => new ValidationService(data ?? []),
+      select: (data) => new ValidationService(data),
 
       /** To prevent a new service instance on window focus.
           The service is meant to be a singleton 

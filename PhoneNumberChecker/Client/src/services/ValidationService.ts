@@ -7,6 +7,7 @@ import { SupportedCountries } from "../models/SupportedCountries";
 import { ValidationPayload } from "../models/ValidationPayload";
 import parsePhoneNumber from "libphonenumber-js";
 import { v4 as uuidv4 } from "uuid";
+import { startCase } from "lodash";
 
 export class ValidationService {
   private _default: SupportedCountries | undefined;
@@ -66,9 +67,10 @@ export class ValidationService {
     const phoneNumber = parsePhoneNumber(`+${countryCode}${number}`);
 
     return {
-      formattedNumberType:
+      formattedNumberType: startCase(
         phoneNumber?.getType()?.toLocaleLowerCase()?.split("_")?.join(" ") ??
-        PhoneNumberType[11].toLowerCase(),
+          PhoneNumberType[11].toLowerCase()?.split("_")?.join(" ")
+      ),
       id: uuidv4(),
       intlFormat: phoneNumber?.formatInternational() ?? "",
       isPossible: phoneNumber?.isPossible() ?? false,

@@ -1,7 +1,7 @@
-import { BaseComponentProps } from "../models/BaseComponentProps";
-import { NumberValidationDTO } from "../models/NumberValidationDTO";
+import { BaseComponentProps } from "../../models/BaseComponentProps";
+import { NumberValidationDTO } from "../../models/NumberValidationDTO";
 import NumberRow from "./NumberRow";
-import useLocalState from "../hooks/useLocalState";
+import useLocalState from "../../hooks/useLocalState";
 
 interface NumberListingProp extends BaseComponentProps {}
 

@@ -18,7 +18,9 @@ function FormInput({
     <MuiTelInput
       autoFocus /** To allow users to start typing when page loads */
       onlyCountries={
-        validationService?.countryCodes
+        !validationService?.countryCodes.length
+          ? undefined
+          : validationService?.countryCodes
       } /** To only show supported countries provided by the api */
       defaultCountry={
         validationService?.defaultCountry ?? "AU"
@@ -28,7 +30,7 @@ function FormInput({
       value={countryValue}
       onChange={onChange}
       disableDropdown={
-        !!!validationService?.countryCodes
+        !!!validationService?.countryCodes.length
       } /** Disable dropdown if api does not return supported countries */
       helperText={validationService?.GetHelperText(
         +(

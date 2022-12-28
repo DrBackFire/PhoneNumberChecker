@@ -1,30 +1,20 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import InboxIcon from "@mui/icons-material/Inbox";
-
-import {
-  Box,
-  IconButton,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import { BaseComponentProps } from "../models/BaseComponentProps";
+import { Box, IconButton } from "@mui/material";
+import { BaseComponentProps } from "../../models/BaseComponentProps";
 import ReactCountryFlag from "react-country-flag";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
-import { NumberValidationDTO } from "../models/NumberValidationDTO";
+import { NumberValidationDTO } from "../../models/NumberValidationDTO";
 import { useMutation } from "react-query";
-import ContextMenu from "./ActionDrawer";
 import { useState } from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ActionDrawer from "./ActionDrawer";
-import useBreakpoint from "../hooks/useBreakpoint";
+import ActionDrawer from "../ActionDrawer";
+import DownloadIcon from "@mui/icons-material/Download";
+import InfoIcon from "@mui/icons-material/Info";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { ActionBtn } from "../ActionDrawer/ActionBtnRow";
+import { CsvHelper } from "../../helpers/Csv";
+
 const CHECK_ICON = <CheckIcon color="success" />;
 const CLOSE_ICON = <CloseIcon color="error" />;
 
@@ -33,6 +23,8 @@ interface NumberRowProp extends BaseComponentProps {
 }
 
 function NumberRow({ number, validationService }: NumberRowProp) {
+  const [actionBtnList, setActionBtnList] = useState<ActionBtn[]>([]);
+
   const { mutate } = useMutation<
     NumberValidationDTO,
     unknown,
@@ -40,14 +32,35 @@ function NumberRow({ number, validationService }: NumberRowProp) {
     unknown
   >("updateValidatedNumbers");
 
-  const [open, setOpen] = useState(false);
-
-  const size = useBreakpoint();
-
-  const isSmall = size === "sm" || size === "xs";
+  const [actionDrawerOpen, setActionDrawerOpen] = useState(false);
 
   const handleClick = () => {
-    setOpen(true);
+    setActionBtnList([
+      {
+        text: "Extra Information",
+        icon: <InfoIcon color="primary" />,
+        color: "primary",
+      },
+
+      {
+        text: "Download CSV",
+        icon: <DownloadIcon color="success" />,
+        color: "green",
+        onClick: () => {
+          CsvHelper.Download(number, {
+            excludeProperties: ["id", "isSelected"],
+          });
+        },
+      },
+
+      {
+        text: "Delete",
+        icon: <DeleteIcon color="error" />,
+        color: "error",
+      },
+    ]);
+
+    setActionDrawerOpen(true);
   };
 
   return (
@@ -87,10 +100,10 @@ function NumberRow({ number, validationService }: NumberRowProp) {
       </div>
 
       <ActionDrawer
+        actionBtnList={actionBtnList}
         validationService={validationService}
-        anchor={isSmall ? "bottom" : "right"}
-        open={open}
-        onClose={() => setOpen(false)}
+        open={actionDrawerOpen}
+        onClose={() => setActionDrawerOpen(false)}
       />
     </>
   );
