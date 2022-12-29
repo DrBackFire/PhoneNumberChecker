@@ -26,14 +26,6 @@ function Header(props: HeaderInputProps) {
           </Typography>
 
           <Box style={{ flexGrow: 1 }}></Box>
-
-          <Box>
-            <Tooltip title="App Information">
-              <IconButton color="primary">
-                <InfoIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
         </Toolbar>
       </AppBar>
       <Form {...props} />

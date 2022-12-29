@@ -1,5 +1,5 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import { BaseComponentProps } from "../../models/BaseComponentProps";
 import ReactCountryFlag from "react-country-flag";
 import CheckIcon from "@mui/icons-material/Check";
@@ -14,6 +14,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ActionBtn } from "../ActionDrawer/ActionBtnRow";
 import { CsvHelper } from "../../helpers/Csv";
+import { useOfflineValidation } from "../../hooks/useOfflineValidation";
 
 const CHECK_ICON = <CheckIcon color="success" />;
 const CLOSE_ICON = <CloseIcon color="error" />;
@@ -24,24 +25,12 @@ interface NumberRowProp extends BaseComponentProps {
 
 function NumberRow({ number, validationService }: NumberRowProp) {
   const [actionBtnList, setActionBtnList] = useState<ActionBtn[]>([]);
-
-  const { mutate } = useMutation<
-    NumberValidationDTO,
-    unknown,
-    NumberValidationDTO,
-    unknown
-  >("updateValidatedNumbers");
+  const { setValidatedNumbers } = useOfflineValidation();
 
   const [actionDrawerOpen, setActionDrawerOpen] = useState(false);
 
   const handleClick = () => {
     setActionBtnList([
-      {
-        text: "Extra Information",
-        icon: <InfoIcon color="primary" />,
-        color: "primary",
-      },
-
       {
         text: "Download CSV",
         icon: <DownloadIcon color="success" />,
@@ -51,12 +40,6 @@ function NumberRow({ number, validationService }: NumberRowProp) {
             excludeProperties: ["id", "isSelected"],
           });
         },
-      },
-
-      {
-        text: "Delete",
-        icon: <DeleteIcon color="error" />,
-        color: "error",
       },
     ]);
 
@@ -68,7 +51,7 @@ function NumberRow({ number, validationService }: NumberRowProp) {
       <div
         onClick={() => {
           number.isSelected = !number.isSelected;
-          mutate(number);
+          setValidatedNumbers(number, true);
         }}
         className={`${
           number.isSelected ? "bg-gray-200" : ""
@@ -94,9 +77,11 @@ function NumberRow({ number, validationService }: NumberRowProp) {
           )}
         </Box>
 
-        <IconButton onClick={handleClick}>
-          <MoreVertIcon />
-        </IconButton>
+        <Tooltip title="More">
+          <IconButton onClick={handleClick}>
+            <MoreVertIcon />
+          </IconButton>
+        </Tooltip>
       </div>
 
       <ActionDrawer

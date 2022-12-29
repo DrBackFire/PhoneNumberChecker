@@ -5,5 +5,9 @@ export interface ValidationPayload {
     countryCode: number;
     phoneNumber: number;
   };
+  /**
+   * Offline validation
+   * @returns Object containing many properties including number intl. format
+   */
   onErrorCallback?: () => NumberValidationDTO;
 }

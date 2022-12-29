@@ -1,5 +1,5 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { useState } from "react";
 import useLocalState from "../../hooks/useLocalState";
 import { BaseComponentProps } from "../../models/BaseComponentProps";
@@ -43,6 +43,7 @@ function NumberHeader({ validationService }: NumberHeaderProp) {
         text: "Download all as CSV",
         icon: <DownloadIcon color="success" />,
         color: "green",
+        disabled: !data.length,
         onClick: () => {
           download(data);
         },
@@ -59,9 +60,11 @@ function NumberHeader({ validationService }: NumberHeaderProp) {
           <p className="font-medium mr-3 text-center">Valid</p>
           <h2 className="font-medium flex-grow mr-4">Number</h2>
           <div className="mr-3">
-            <IconButton onClick={handleClick} size="small">
-              <MoreVertIcon />
-            </IconButton>
+            <Tooltip title="More">
+              <IconButton onClick={handleClick} size="small">
+                <MoreVertIcon />
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
       </section>

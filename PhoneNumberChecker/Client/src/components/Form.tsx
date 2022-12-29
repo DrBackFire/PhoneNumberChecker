@@ -2,18 +2,18 @@ import { Box, Button, Snackbar, Alert } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { BaseComponentProps } from "../models/BaseComponentProps";
 import FormInput from "./FormInput";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { validatePhoneNumber } from "../services/Api";
-import { NumberValidationDTO } from "../models/NumberValidationDTO";
 import { MuiTelInputInfo } from "mui-tel-input";
 import { useState } from "react";
-import { getFromStorage, setStorage } from "../helpers/localStorage";
+import { useOfflineValidation } from "../hooks/useOfflineValidation";
 
 export interface FormProps extends BaseComponentProps {}
 
 function Form(props: FormProps) {
   const { validationService } = props;
-  const queryClient = useQueryClient();
+  const { setValidatedNumbers } = useOfflineValidation();
+
   const { mutateAsync, error } = useMutation("validatePhoneNumber", {
     mutationFn: validatePhoneNumber,
     onSuccess: (data) => {
@@ -64,28 +64,6 @@ function Form(props: FormProps) {
       setIsError(true);
       setErrorTxt("Invalid number");
     }
-  };
-
-  const setValidatedNumbers = (data: NumberValidationDTO, patch = false) => {
-    let localData = getFromStorage<NumberValidationDTO[]>("VALIDATED_NUMBERS", [
-      data,
-    ]);
-
-    if (!patch) {
-      localData = !localData.includes(data) ? [data, ...localData] : localData;
-    } else {
-      localData = localData.map((x) => {
-        if (x.id === data.id) {
-          x = data;
-        }
-
-        return x;
-      });
-    }
-
-    setStorage<NumberValidationDTO[]>("VALIDATED_NUMBERS", localData);
-
-    queryClient.invalidateQueries(["VALIDATED_NUMBERS"]);
   };
 
   return (

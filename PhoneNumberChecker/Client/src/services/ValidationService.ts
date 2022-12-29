@@ -9,7 +9,13 @@ import parsePhoneNumber from "libphonenumber-js";
 import { v4 as uuidv4 } from "uuid";
 import { startCase } from "lodash";
 
+/**
+ * A class that hold validation logic (for offline) and getters to get relevant data
+ */
 export class ValidationService {
+  /**
+   * The default country determined by the api
+   */
   private _default: SupportedCountries | undefined;
 
   private _numberToValidate: ValidationPayload = {
@@ -21,10 +27,14 @@ export class ValidationService {
 
   constructor(private supportedCountries: SupportedCountries[]) {
     if (supportedCountries) {
-      this._default = this.supportedCountries.find((x) => x.isDefault);
+      this._default = this.supportedCountries?.find((x) => x.isDefault);
     }
   }
 
+  /**
+   * Set the number to be validated
+   * @param value Payload to be validated
+   */
   SetValidationPayload(value: ValidationPayload) {
     this._numberToValidate = value;
   }
@@ -47,20 +57,34 @@ export class ValidationService {
     return this._default?.countryCode?.toString();
   }
 
+  /**
+   * Validates users input before calling the api
+   * @param CountryInfo The information on the entered country
+   * @returns Is a validate number or not
+   */
   ValidateInput({ numberValue }: MuiTelInputInfo) {
     return !!parsePhoneNumber(numberValue ?? "");
   }
 
+  /**
+   * Get country's phone number example
+   * @param countryCallingCode
+   * @returns Formatted phone number
+   */
   GetHelperText(countryCallingCode: number): string {
     const ph =
       this.supportedCountries.find((x) => x.countryCode === countryCallingCode)
         ?.numberPlaceHolder ??
       this._default?.numberPlaceHolder ??
-      "";
+      "000-000-000";
 
     return `e.g. ${ph}`;
   }
 
+  /**
+   * Offline validation using libphonenumber-js
+   * @returns Object containing many properties including number intl. format
+   */
   ValidateOffline(): NumberValidationDTO {
     const { countryCode, phoneNumber: number } = this._numberToValidate.payload;
 

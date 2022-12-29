@@ -4,7 +4,7 @@ import { ValidationPayload } from "../models/ValidationPayload";
 import axios, { AxiosError } from "axios";
 
 const api = axios.create({
-  baseURL: "/api/PhoneNumber",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 const API_ROUTES = {
@@ -30,7 +30,7 @@ export const fetchCountries = async () => {
 /**
  * Get list of supported countries
  * @param payload Country calling code and phone number
- * @returns  Returns an object containing many properties including number intl. format
+ * @returns  Object containing many properties including number intl. format
  */
 export const validatePhoneNumber = async ({
   payload,

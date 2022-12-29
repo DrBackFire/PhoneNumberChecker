@@ -2,9 +2,9 @@ import { StorageKeys } from "../models/StorageKeys";
 
 /**
  * Get value from local storage
- * @param  {StorageKeys} key
- * @param  {object} initialValue - To be returned if no value found
- * @return {T} Value
+ * @param  key
+ * @param  initialValue - To be returned if no value found
+ * @return Value
  */
 const getFromStorage = <T>(key: StorageKeys, initialValue: T) => {
   // State to store our value
@@ -27,8 +27,8 @@ const getFromStorage = <T>(key: StorageKeys, initialValue: T) => {
 
 /**
  * Get value from local storage
- * @param  {StorageKeys} key
- * @param  {object} valueToStore Value to store
+ * @param  key
+ * @param  valueToStore Value to store
  */
 const setStorage = <T>(key: StorageKeys, valueToStore: T) => {
   try {

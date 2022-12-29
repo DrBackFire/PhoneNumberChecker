@@ -1,4 +1,3 @@
-import { NumberValidationDTO } from "../models/NumberValidationDTO";
 import { startCase } from "lodash";
 
 export class ObjectToCsvOpt<TObject> {
