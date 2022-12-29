@@ -1,13 +1,4 @@
-import {
-  Tooltip,
-  Typography,
-  IconButton,
-  Toolbar,
-  Box,
-  AppBar,
-} from "@mui/material";
-
-import InfoIcon from "@mui/icons-material/Info";
+import { Typography, Toolbar, Box, AppBar } from "@mui/material";
 import SecurityIcon from "@mui/icons-material/Security";
 import Form from "./Form";
 import { BaseComponentProps } from "../models/BaseComponentProps";
