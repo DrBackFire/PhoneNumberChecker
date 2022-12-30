@@ -53,9 +53,7 @@ export class CsvHelper {
 
     const data = Object.values(obj).map((x) => JSON.stringify(x));
 
-    if (header) {
-      return [[...header], [...data]];
-    }
+    if (header) return [[...header], [...data]];
 
     return [[...data]];
   }
@@ -97,14 +95,13 @@ export class CsvHelper {
 
     let data: string[][] = [];
 
-    if (Array.isArray(val)) {
-      data = this.ArrayToCsvData<T>(val, opt);
-    } else {
-      data = this.ObjectToCsvData<T>(val, opt);
-    }
+    if (Array.isArray(val)) data = this.ArrayToCsvData<T>(val, opt);
+    else data = this.ObjectToCsvData<T>(val, opt);
 
-    // Building the CSV from the Data two-dimensional array
-    // Each columns is separated by "," and new line "\n" for next row
+    /**
+     * Building the CSV from the Data two-dimensional array
+     * Each columns is separated by "," and new line "\n" for next row
+     */
     let csvContent = "";
     data.map((infoArray, index) => {
       const dataString = infoArray.join(",");
@@ -114,17 +111,15 @@ export class CsvHelper {
     // Create anchor tag with download attributes to download as CSV
     let a = document.createElement("a");
 
-    const mimeType = "text/csv;encoding:utf-8";
+    const type = "text/csv;encoding:utf-8";
 
-    if (!opt.fileName?.toLowerCase().includes(".csv")) {
-      opt.fileName += ".csv";
-    }
+    if (!opt.fileName?.toLowerCase().includes(".csv")) opt.fileName += ".csv";
 
     if (URL && "download" in a) {
       // HTML5 A[download]
       a.href = URL.createObjectURL(
         new Blob([csvContent], {
-          type: mimeType,
+          type,
         })
       );
       a.setAttribute("download", opt.fileName ?? "file.csv");

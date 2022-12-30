@@ -8,10 +8,6 @@ import { NumberValidationDTO } from "../../models/NumberValidationDTO";
 import DownloadIcon from "@mui/icons-material/Download";
 import { CsvHelper } from "../../helpers/Csv";
 import { useOfflineValidation } from "../../hooks/useOfflineValidation";
-
-const CHECK_ICON = <CheckIcon color="success" />;
-const CLOSE_ICON = <CloseIcon color="error" />;
-
 interface NumberRowProp extends BaseComponentProps {
   number: NumberValidationDTO;
 }
@@ -35,7 +31,13 @@ function NumberRow({ number }: NumberRowProp) {
         number.isSelected ? "bg-gray-200" : ""
       } flex items-center py-2 pl-3 pr-2 rounded-lg hover:bg-gray-100 text-gray-700 cursor-pointer text-sm border mb-2`}
     >
-      <p className="text-sm mr-4">{number.isValid ? CHECK_ICON : CLOSE_ICON}</p>
+      <p className="text-sm mr-4">
+        {number.isValid ? (
+          <CheckIcon color="success" />
+        ) : (
+          <CloseIcon color="error" />
+        )}
+      </p>
 
       <p className="flex-grow w-10 truncate">
         {number.intlFormat}

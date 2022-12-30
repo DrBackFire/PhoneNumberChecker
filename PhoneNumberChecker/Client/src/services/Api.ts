@@ -58,10 +58,8 @@ export const validatePhoneNumber = async ({
     // offline validation
     if (onErrorCallback) data = onErrorCallback();
 
-    if (data) {
-      return data;
-    } else {
-      return Promise.reject(err.response?.data);
-    }
+    if (data) return data;
+
+    return Promise.reject(err.response?.data);
   }
 };
